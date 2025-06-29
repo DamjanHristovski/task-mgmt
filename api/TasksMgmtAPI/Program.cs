@@ -31,7 +31,10 @@ namespace TasksMgmtAPI
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddDbContext<TasksDBContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    sqlOptions => sqlOptions.EnableRetryOnFailure()
+                );
             });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -88,6 +91,7 @@ namespace TasksMgmtAPI
                 });
             });
 
+            builder.WebHost.UseUrls("http://+:5000");
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -98,14 +102,12 @@ namespace TasksMgmtAPI
             }
 
             app.UseCors("Cors");
-            app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
 
             app.MapControllers();
-
             app.Run();
         }
     }

@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: task-mgmt-db
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - task-mgmt-net
+
+  backend:
+    build:
+      context: ./api
+    container_name: task-mgmt-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=db;Database=task_mgmt_db;User Id=sa;Password=Your_password123;TrustServerCertificate=True;Encrypt=False;"
+    networks:
+      - task-mgmt-net
+
+  frontend:
+    build:
+      context: ./client
+    container_name: task-mgmt-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - task-mgmt-net
+
+networks:
+  task-mgmt-net:
+    driver: bridge
