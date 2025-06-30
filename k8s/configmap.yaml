@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: task-mgmt-ns
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ConnectionStrings__DefaultConnection: "Server=task-mgmt-db-svc;Database=TasksDB;User Id=sa;Password=YourStrong!Passw0rd;"

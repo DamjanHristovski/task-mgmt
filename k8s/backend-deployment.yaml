@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-mgmt-backend
+  namespace: task-mgmt-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: task-mgmt-backend
+  template:
+    metadata:
+      labels:
+        app: task-mgmt-backend
+    spec:
+      containers:
+        - name: backend
+          image: damcobrzi/task-mgmt-backend:latest
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: mssql-secret

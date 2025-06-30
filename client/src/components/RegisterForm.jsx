@@ -28,7 +28,7 @@ const RegisterForm = () => {
     if (isValid) {
       try {
         setLoading(true);
-        const API_URl = "http://backend:5000/api/User/register";
+        const API_URl = "http://localhost:5000/api/User/register";
         const response = await axios.post(API_URl, formData);
         console.log(response);
         navigate("/login");

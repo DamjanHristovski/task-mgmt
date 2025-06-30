@@ -18,7 +18,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const API_URL = "http://backend:5000/api/User/login";
+      const API_URL = "http://localhost:5000/api/User/login";
       const response = await axios.post(API_URL, formData);
       console.log(response);
       sessionStorage.setItem("isLoggedIn", true);
